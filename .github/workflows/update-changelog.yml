@@ -5,10 +5,6 @@ on:
       - main
     types: closed
 
-name: "Update changelog on PR merge"
-on:
-  workflow_call:
-
 jobs:
   update_changelog:
     if: |
