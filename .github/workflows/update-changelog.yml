@@ -25,7 +25,7 @@ jobs:
           UPDATE_TITLE_ENV: '${{ github.event.pull_request.title }}'
           UPDATE_BODY_ENV: '${{ github.event.pull_request.body }}'
       - name: 'Generate .changelog.json'
-        uses: CuBoulder/action-update-changelog
+        uses: CuBoulder/action-update-changelog@main
         id: generate-changelog
         with:
           data: '$(<.changelog.json)'
