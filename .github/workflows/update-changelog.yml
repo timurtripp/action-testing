@@ -5,7 +5,44 @@ on:
       - main
     types: closed
 
+name: "Update changelog on PR merge"
+on:
+  workflow_call:
+
 jobs:
   update_changelog:
-    uses: CuBoulder/action-collection/.github/workflows/update-changelog.yml@main
-
+    if: |
+      github.event.pull_request.merged == true && 
+      !startsWith(github.head_ref, 'release')
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: 'Update CHANGELOG.md'
+        run: |
+          UPDATE_TITLE=$(echo "${UPDATE_TITLE_ENV}" | sed -e 's/\\/\\\\/g' -e 's/$/\\&/g')
+          UPDATE_BODY=$(echo "${UPDATE_BODY_ENV}" | sed -e 's/^/&  /g' -e 's/\\/\\\\/g' -e 's/$/\\&/g')
+          sed -i "/## \[Unreleased\]/a\\\n- ### ${UPDATE_TITLE}n${UPDATE_BODY}n---" CHANGELOG.md
+        env:
+          UPDATE_TITLE_ENV: '${{ github.event.pull_request.title }}'
+          UPDATE_BODY_ENV: '${{ github.event.pull_request.body }}'
+      - name: 'Generate .changelog.json'
+        uses: CuBoulder/action-update-changelog
+        id: generate-changelog
+        with:
+          data: '$(<.changelog.json)'
+          change-title: '${{ github.event.pull_request.title }}'
+          change-description: '${{ github.event.pull_request.body }}'
+      - name: 'Write .changelog.json'
+        run: 'echo $CHANGELOG_DATA >> .changelog.json'
+        env:
+          CHANGELOG_DATA: '${{ steps.generate-changelog.outputs.data }}'
+      - name: Amend the last commit
+        run: |
+          git config --global user.email "noreply@github.com"
+          git config --global user.name "Version Update"
+          git commit -a --amend --no-edit
+          git push --force-with-lease
+          echo "Complete"
