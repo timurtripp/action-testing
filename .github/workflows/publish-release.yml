@@ -9,7 +9,7 @@ on:
 
 jobs:
   release:
-    uses: CuBoulder/action-collection/.github/workflows/publish-release.yml@main
+    uses: TimurTripp/action-collection/.github/workflows/publish-release.yml@main
     secrets:
       envPAT: ${{ secrets.GITHUB_TOKEN }}
 
