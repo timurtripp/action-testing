@@ -1,0 +1,11 @@
+name: Lint Code Base
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  release:
+    uses: TimurTripp/action-collection/.github/workflows/lint.yml@main
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
