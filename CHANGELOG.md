@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- ### Creates `branch-3.txt`
+  This update:
+  - Adds `branch-3.txt`
+  - Item 2
+  - Item 3
+  
+  Sister PR in: [tiamat-theme](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+---
+
 ## [1.0.0-alpha2] - 2024-09-30
 
 - ### Adds `branch-1.txt`
