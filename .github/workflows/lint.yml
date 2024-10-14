@@ -7,5 +7,3 @@ on:
 jobs:
   release:
     uses: TimurTripp/action-collection/.github/workflows/lint.yml@main
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
